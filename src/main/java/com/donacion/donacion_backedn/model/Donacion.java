@@ -20,8 +20,8 @@ public class Donacion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "donacion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductoCarrito> productosDonacion = new ArrayList<>();
+    /*@OneToMany(mappedBy = "donacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductoCarrito> productosDonacion = new ArrayList<>();*/
 
     @ManyToOne
     @JoinColumn(name = "albergue_id")
@@ -45,7 +45,7 @@ public class Donacion {
     private Boolean recojo;
 
 
-    public void addProductoCarrito(ProductoCarrito productoCarrito) {
+    /*public void addProductoCarrito(ProductoCarrito productoCarrito) {
         productosDonacion.add(productoCarrito);
         productoCarrito.setDonacion(this);
     }
@@ -53,6 +53,6 @@ public class Donacion {
     public void removeProductoCarrito(ProductoCarrito productoCarrito) {
         productosDonacion.remove(productoCarrito);
         productoCarrito.setDonacion(null);
-    }
+    }*/
 
 }

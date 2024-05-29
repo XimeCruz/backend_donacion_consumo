@@ -3,10 +3,11 @@ package com.donacion.donacion_backedn.service;
 import com.donacion.donacion_backedn.model.Donacion;
 import com.donacion.donacion_backedn.model.Notificacion;
 import com.donacion.donacion_backedn.repository.DonacionRepository;
+import com.donacion.donacion_backedn.response.DonacionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +17,14 @@ import java.util.List;
 public class DonacionService {
 
     @Autowired
-    private DonacionRepository donacionRepository;
+    public DonacionRepository donacionRepository;
+
     @Autowired
-    private NotificacionService notificacionService;
+    public NotificacionService notificacionService;
+
+    @Autowired
+    @Lazy
+    public ProductoCarritoService productoCarritoService;
 
     // Método para obtener todas las Donacions
     public List<Donacion> getAllDonacions() {
@@ -57,7 +63,9 @@ public class DonacionService {
         return donacionRepository.findByAsignado(false);
     }
 
-    public Donacion actualizarEstadoDonacion(Integer idDonacion) {
+    public Donacion actualizarEstadoDonacion(Long idDonacion) {
+        Notificacion notificacion = new Notificacion();
+        notificacion.setId(idDonacion);
         Donacion donacion = donacionRepository.findById(Long.valueOf(idDonacion)).orElse(null);
         donacion.setAceptado(true);
         donacionRepository.save(donacion);
@@ -73,4 +81,7 @@ public class DonacionService {
         notificacionService.guardarNotificacion(notificacion);
         return donacion;
     }
+
+
+
 }

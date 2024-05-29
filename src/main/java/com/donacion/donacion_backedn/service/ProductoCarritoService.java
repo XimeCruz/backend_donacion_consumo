@@ -2,11 +2,14 @@ package com.donacion.donacion_backedn.service;
 
 
 import com.donacion.donacion_backedn.model.*;
+import com.donacion.donacion_backedn.repository.DonacionRepository;
 import com.donacion.donacion_backedn.repository.ProductoCarritoRepository;
 import com.donacion.donacion_backedn.repository.ProductoStockRepository;
 import com.donacion.donacion_backedn.request.ProductoRequest;
+import com.donacion.donacion_backedn.response.DonacionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +33,13 @@ public class ProductoCarritoService {
 
     @Autowired
     private AlbergueService albergueService;
+
     @Autowired
+    @Lazy
     private DonacionService donacionService;
+
+    @Autowired
+    private DonacionRepository donacionRepository;
 
     public ProductoCarrito getById(Long id) {
 
@@ -80,16 +88,15 @@ public class ProductoCarritoService {
 
         List<ProductoCarrito> productoCarritos = productoCarritoRepository.findByConfirmadoAndAndBeneficiarioId(false, Long.valueOf(idUsuario));
         Donacion donacion = new Donacion();
-        donacionService.saveDonacion(donacion);
+
         if(productoCarritos != null && !productoCarritos.isEmpty()){
             for (ProductoCarrito productoCarrito : productoCarritos) {
+                donacionService.saveDonacion(donacion);
                 System.out.println(productoCarrito);
-                productoCarrito.setDonacion(donacion);
+                productoCarrito.setDonacionId(Math.toIntExact(donacion.getId()));
                 productoCarrito.setConfirmado(true);
-                donacion.addProductoCarrito(productoCarrito);
                 productoCarritoRepository.save(productoCarrito);
             }
-            //productoCarritoRepository.saveAll(productoCarritos);
             Usuario usuario = usuarioService.obtenerUsuarioPorId(idUsuario);
             Albergue albergue = albergueService.findByBeneficiario(Math.toIntExact(idUsuario));
             donacion.setBeneficiario(usuario);
@@ -98,12 +105,24 @@ public class ProductoCarritoService {
             donacion.setAsignado(false);
             donacion.setRecojo(false);
             donacionService.saveDonacion(donacion);
-
-            donacion.setProductosDonacion(productoCarritos);
-            donacionService.saveDonacion(donacion);
         }
 
         return donacion;
+    }
+
+    public DonacionResponse obtenerInformacionDonacion(Long idDonacion) {
+        Donacion donacion = donacionService.getDonacionById(idDonacion.intValue());
+        DonacionResponse donacionResponse = new DonacionResponse();
+        assert donacion != null;
+        donacionResponse.setBeneficiario(donacion.getBeneficiario());
+        donacionResponse.setAlbergue(donacion.getAlbergue());
+        List<ProductoCarrito> productoCarritoList = getProductosPorDonacion(Math.toIntExact(donacion.getId()));
+        donacionResponse.setProductosDonacion(productoCarritoList);
+        return donacionResponse;
+    }
+
+    public List<ProductoCarrito> getProductosPorDonacion(Integer donacionId) {
+        return productoCarritoRepository.findByDonacionId(donacionId);
     }
 }
 

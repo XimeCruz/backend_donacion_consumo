@@ -33,9 +33,7 @@ public class ProductoCarrito {
 
 	private Boolean confirmado;
 
-	@ManyToOne
-    @JoinColumn(name = "donacion_id")
-    private Donacion donacion;
+	private Integer donacionId;
 
 	private Integer beneficiarioId;
 
