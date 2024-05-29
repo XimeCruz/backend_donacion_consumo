@@ -28,9 +28,9 @@ public class SolicitudController {
 
     }
 
-    @GetMapping("/carrito-donacion")
-    public ResponseEntity<List<ProductoCarrito>> carritoDonacion() {
-        List<ProductoCarrito> productoCarritoList = productoCarritoService.getProdcutosPorEstado(false);
+    @GetMapping("/carrito-donacion/{idBeneficiario}")
+    public ResponseEntity<List<ProductoCarrito>> carritoDonacion(@PathVariable Long idBeneficiario) {
+        List<ProductoCarrito> productoCarritoList = productoCarritoService.getProdcutosPorEstado(false,idBeneficiario);
         return new ResponseEntity<>(productoCarritoList, HttpStatusCode.valueOf(200));
     }
 
@@ -41,6 +41,11 @@ public class SolicitudController {
 
     //en la web ver la lista de donacion y tambien ver por id
     //cambiar la propiedad aceptado a true
+    @GetMapping("/lista-donacion/{idBeneficiario}")
+    public ResponseEntity<List<ProductoCarrito>> carritoListaDonacion(@PathVariable Long idBeneficiario) {
+        List<ProductoCarrito> productoCarritoList = productoCarritoService.getProdcutosPorEstado(true,idBeneficiario);
+        return new ResponseEntity<>(productoCarritoList, HttpStatusCode.valueOf(200));
+    }
 
 
     //en voluntario al momento de ser acptado ver en notificaciones

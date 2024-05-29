@@ -53,13 +53,11 @@ public class ProductoCarritoService {
 
     public ProductoCarrito guardarProducto(ProductoRequest productoRequest) {
         ProductoCarrito productoCarrito = new ProductoCarrito();
-        Usuario usuario = usuarioService.obtenerUsuarioPorId(Long.valueOf(productoRequest.getIdUsuario()));
-        ProductoStock productoStock = productoStockService.getById(Long.valueOf(productoRequest.getIdProducto()));
         productoCarrito.setFechaDeAgregado(Date.valueOf(LocalDate.now()));
-        productoCarrito.setBeneficiario(usuario);
-        productoCarrito.setProductoStock(productoStock);
+        productoCarrito.setBeneficiarioId(productoRequest.getIdUsuario());
         productoCarrito.setCantidadSeleccionada(productoRequest.getCantidad());
         productoCarrito.setConfirmado(false);
+        productoCarrito.setProductoId(productoRequest.getIdProducto());
         return productoCarritoRepository.save(productoCarrito);
     }
 
@@ -73,27 +71,38 @@ public class ProductoCarritoService {
     }
 
 
-    public List<ProductoCarrito> getProdcutosPorEstado(Boolean estado) {
-        return productoCarritoRepository.findByConfirmado(estado);
+    public List<ProductoCarrito> getProdcutosPorEstado(boolean estado, Long idBeneficiario) {
+        return productoCarritoRepository.findByConfirmadoAndAndBeneficiarioId(estado, Long.valueOf(idBeneficiario));
     }
 
 
     public Donacion confirmarPedido(Long idUsuario) {
-        Usuario usuario = usuarioService.obtenerUsuarioPorId(idUsuario);
-        List<ProductoCarrito> productoCarritos = productoCarritoRepository.findByUsuario(usuario);
-        for (ProductoCarrito productoCarrito : productoCarritos) {
-            productoCarrito.setConfirmado(true);
-            productoCarritoRepository.save(productoCarrito);
-        }
-        productoCarritoRepository.saveAll(productoCarritos);
-        Donacion donacion = new Donacion();
-        Albergue albergue = albergueService.findByBeneficiario(Math.toIntExact(idUsuario));
-        donacion.setBeneficiario(usuario);
-        donacion.setAlbergue(albergue);
-        donacion.setProductosDonacion(productoCarritos);
-        donacion.setAceptado(false);
 
+        List<ProductoCarrito> productoCarritos = productoCarritoRepository.findByConfirmadoAndAndBeneficiarioId(false, Long.valueOf(idUsuario));
+        Donacion donacion = new Donacion();
         donacionService.saveDonacion(donacion);
+        if(productoCarritos != null && !productoCarritos.isEmpty()){
+            for (ProductoCarrito productoCarrito : productoCarritos) {
+                System.out.println(productoCarrito);
+                productoCarrito.setDonacion(donacion);
+                productoCarrito.setConfirmado(true);
+                donacion.addProductoCarrito(productoCarrito);
+                productoCarritoRepository.save(productoCarrito);
+            }
+            //productoCarritoRepository.saveAll(productoCarritos);
+            Usuario usuario = usuarioService.obtenerUsuarioPorId(idUsuario);
+            Albergue albergue = albergueService.findByBeneficiario(Math.toIntExact(idUsuario));
+            donacion.setBeneficiario(usuario);
+            donacion.setAlbergue(albergue);
+            donacion.setAceptado(false);
+            donacion.setAsignado(false);
+            donacion.setRecojo(false);
+            donacionService.saveDonacion(donacion);
+
+            donacion.setProductosDonacion(productoCarritos);
+            donacionService.saveDonacion(donacion);
+        }
+
         return donacion;
     }
 }

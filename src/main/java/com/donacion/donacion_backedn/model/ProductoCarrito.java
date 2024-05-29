@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @ToString
@@ -28,15 +29,15 @@ public class ProductoCarrito {
 	@Column(name = "fecha de agregado")
 	private Date fechaDeAgregado;
 
-	@OneToOne()
-	@JoinColumn(name = "IdProducto_Stock")
-	private ProductoStock productoStock;
-
-	@OneToOne()
-	@JoinColumn(name = "idBeneficiario")
-	private Usuario Beneficiario;
+	private Integer productoId;
 
 	private Boolean confirmado;
+
+	@ManyToOne
+    @JoinColumn(name = "donacion_id")
+    private Donacion donacion;
+
+	private Integer beneficiarioId;
 
 	
 	

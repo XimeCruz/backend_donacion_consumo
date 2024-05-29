@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface ProductoCarritoRepository extends JpaRepository<ProductoCarrito,Long> {
 
-   // List<ProductoCarrito> findByBeneficiario(Usuario beneficiario);
-
     List<ProductoCarrito> findByConfirmado(Boolean confirmado);
 
-    List<ProductoCarrito> findByUsuario(Usuario usuario);
+    List<ProductoCarrito> findByConfirmadoAndAndBeneficiarioId(Boolean confirmado, Long beneficiarioId);
+
+    List<ProductoCarrito> findByBeneficiarioId(Integer beneficiarioId);
 
 }

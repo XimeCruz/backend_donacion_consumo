@@ -35,11 +35,7 @@ public class ProductoStock {
 	@NotEmpty(message = "Falta rellenar el campo descripción")
 	private String descripcion;
 	
-	
-	@ManyToOne
-	@JoinColumn(name = "IdCategoria")
-	private Categoria categoria;
-	
+	private Integer idCategoria;
 	
 	@Column(name = "cantidadDisponible")
 	@Min(value = 1,message = "la cantidad de unidades disponibles debe ser por lo menos 1 " )

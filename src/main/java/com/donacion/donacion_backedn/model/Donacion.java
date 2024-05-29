@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,12 +15,13 @@ import java.util.List;
 @Table
 @Entity
 public class Donacion {
+
     @Id
-    @Column(name = "id", nullable = false)
-    private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @OneToMany(mappedBy = "donacion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductoCarrito> productosDonacion;
+    private List<ProductoCarrito> productosDonacion = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "albergue_id")
@@ -41,5 +43,16 @@ public class Donacion {
 
 
     private Boolean recojo;
+
+
+    public void addProductoCarrito(ProductoCarrito productoCarrito) {
+        productosDonacion.add(productoCarrito);
+        productoCarrito.setDonacion(this);
+    }
+
+    public void removeProductoCarrito(ProductoCarrito productoCarrito) {
+        productosDonacion.remove(productoCarrito);
+        productoCarrito.setDonacion(null);
+    }
 
 }

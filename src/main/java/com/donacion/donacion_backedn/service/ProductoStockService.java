@@ -53,7 +53,7 @@ public class ProductoStockService {
         ProductoStock productoStock = new ProductoStock();
         productoStock.setFechaDePublicacion(java.sql.Date.valueOf(LocalDate.now()));
         productoStock.setDonante(donante);
-        productoStock.setCategoria(categoriaServices.getById(Long.valueOf(añadirProductoRequest.getIdCategoria())));
+        productoStock.setIdCategoria(añadirProductoRequest.getIdCategoria());
         productoStock.setImagen("por defecto");
         productoStock.setNombre(añadirProductoRequest.getNombre());
         productoStock.setDescripcion(añadirProductoRequest.getDescripcion());
@@ -77,35 +77,35 @@ public class ProductoStockService {
     }
 
 
-    public void actualizarProducto(ProductoStock productoStock) {
+//    public void actualizarProducto(ProductoStock productoStock) {
+//
+//        ProductoStock productoStockActualizar=productoStockRepository
+//                .findById(productoStock.getId())
+//                .get();
+//
+//        Categoria categoria= categoriaServices
+//                .getById(productoStock
+//                        .getCategoria()
+//                        .getId());
+//
+//
+//        productoStockActualizar.setNombre(productoStock.getNombre());
+//        productoStockActualizar.setUnidadesDisponibles(productoStock.getUnidadesDisponibles());
+//        productoStockActualizar.setDescripcion(productoStock.getDescripcion());
+//
+//
+//        productoStockActualizar.setCategoria(categoria);
+//
+//        productoStockRepository.save(productoStockActualizar);
+//    }
 
-        ProductoStock productoStockActualizar=productoStockRepository
-                .findById(productoStock.getId())
-                .get();
 
-        Categoria categoria= categoriaServices
-                .getById(productoStock
-                        .getCategoria()
-                        .getId());
-
-
-        productoStockActualizar.setNombre(productoStock.getNombre());
-        productoStockActualizar.setUnidadesDisponibles(productoStock.getUnidadesDisponibles());
-        productoStockActualizar.setDescripcion(productoStock.getDescripcion());
-
-
-        productoStockActualizar.setCategoria(categoria);
-
-        productoStockRepository.save(productoStockActualizar);
-    }
-
-
-    public List<ProductoStock> porCategoria(Long id) {
-
-        Categoria categoria= categoriaServices.getById(id);
-
-        return productoStockRepository.findByCategoria(categoria);
-    }
+//    public List<ProductoStock> porCategoria(Long id) {
+//
+//        Categoria categoria= categoriaServices.getById(id);
+//
+//        return productoStockRepository.findByCategoria(categoria);
+//    }
 
 
 

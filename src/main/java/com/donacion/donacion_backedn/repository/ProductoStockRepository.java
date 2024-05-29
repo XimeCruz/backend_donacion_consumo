@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface ProductoStockRepository extends JpaRepository<ProductoStock,Long> {
 
-    List<ProductoStock> findByCategoria(Categoria categoria);
+    //List<ProductoStock> findByCategoria(Categoria categoria);
 
     public List<ProductoStock> findByFechaDeVencimientoBetween(Date fechaIni, Date fechaFin);
 
