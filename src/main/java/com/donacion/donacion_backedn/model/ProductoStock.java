@@ -65,6 +65,6 @@ public class ProductoStock {
 	private Usuario donante;
 	
 	// private String estado; // Nuevo, Usado, etc.
-    private boolean confirmado = false;
+    private boolean verificado;
 
 }

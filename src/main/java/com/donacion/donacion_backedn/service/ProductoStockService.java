@@ -1,9 +1,11 @@
 package com.donacion.donacion_backedn.service;
 
 import com.donacion.donacion_backedn.model.Categoria;
+import com.donacion.donacion_backedn.model.Notificacion;
 import com.donacion.donacion_backedn.model.ProductoStock;
 import com.donacion.donacion_backedn.model.Usuario;
 import com.donacion.donacion_backedn.repository.ProductoStockRepository;
+import com.donacion.donacion_backedn.request.AñadirProductoRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,8 @@ public class ProductoStockService {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private NotificacionService notificacionService;
 
     public ProductoStock getById(Long id) {
 
@@ -43,12 +47,28 @@ public class ProductoStockService {
         return productoStockRepository.findAll();
     }
 
-    public void guardarProducto(ProductoStock productoStock) {
+    public ProductoStock guardarProducto(AñadirProductoRequest añadirProductoRequest) {
 
-        Usuario donante=vendedorServices.GetbyEmail("Admin@gmail.com");
+        Usuario donante = usuarioService.obtenerUsuarioPorId(Long.valueOf(añadirProductoRequest.getIdDonante()));
+        ProductoStock productoStock = new ProductoStock();
         productoStock.setFechaDePublicacion(java.sql.Date.valueOf(LocalDate.now()));
         productoStock.setDonante(donante);
+        productoStock.setCategoria(categoriaServices.getById(Long.valueOf(añadirProductoRequest.getIdCategoria())));
+        productoStock.setImagen("por defecto");
+        productoStock.setNombre(añadirProductoRequest.getNombre());
+        productoStock.setDescripcion(añadirProductoRequest.getDescripcion());
+        productoStock.setFechaDeVencimiento(añadirProductoRequest.getFechaDeVencimiento());
+        productoStock.setUnidadesDisponibles(añadirProductoRequest.getUnidadesDisponibles());
+        productoStock.setVerificado(false);
         productoStockRepository.save(productoStock);
+
+
+        Notificacion notificacion = new Notificacion();
+        notificacion.setMensaje("El producto de nombre "+productoStock.getNombre()+" sta listo para ser revisado, ver mas detalles en la ventana de confirmaciones");
+        notificacionService.guardarNotificacion(notificacion);
+
+
+        return productoStock;
     }
 
     public void eliminarProducto(Long id) {
@@ -113,14 +133,21 @@ public class ProductoStockService {
     }
 
     // Método para confirmar estado del producto
-    public void confirmarProducto(Long id) {
+    /*public void confirmarProducto(Long id) {
         ProductoStock producto = productoStockRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         producto.setConfirmado(true);
         productoStockRepository.save(producto);
-    }
+    }*/
 
     public List<ProductoStock> findByDonante(Integer id){
         return productoStockRepository.findByDonante(usuarioService.obtenerUsuarioPorId(Long.valueOf(id)));
     }
 
+    public Notificacion cambiarVerificacion(Integer idProducto, Integer idVoluntario) {
+        ProductoStock productoStock = productoStockRepository.findById(Long.valueOf(idProducto)).orElse(null);
+        productoStock.setVerificado(true);
+        productoStockRepository.save(productoStock);
+        Notificacion notificacion = new Notificacion();
+        return notificacion;
+    }
 }
