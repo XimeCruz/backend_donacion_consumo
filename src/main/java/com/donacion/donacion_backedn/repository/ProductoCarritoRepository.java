@@ -11,4 +11,8 @@ public interface ProductoCarritoRepository extends JpaRepository<ProductoCarrito
 
    // List<ProductoCarrito> findByBeneficiario(Usuario beneficiario);
 
+    List<ProductoCarrito> findByConfirmado(Boolean confirmado);
+
+    List<ProductoCarrito> findByUsuario(Usuario usuario);
+
 }

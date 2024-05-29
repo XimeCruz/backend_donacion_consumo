@@ -27,14 +27,16 @@ public class ProductoCarrito {
 	
 	@Column(name = "fecha de agregado")
 	private Date fechaDeAgregado;
-	
-	
-	/**
-	 * identifica el producto de la tienda asociado a un producto agregado al carrito.
-	 */
+
 	@OneToOne()
 	@JoinColumn(name = "IdProducto_Stock")
 	private ProductoStock productoStock;
+
+	@OneToOne()
+	@JoinColumn(name = "idBeneficiario")
+	private Usuario Beneficiario;
+
+	private Boolean confirmado;
 
 	
 	

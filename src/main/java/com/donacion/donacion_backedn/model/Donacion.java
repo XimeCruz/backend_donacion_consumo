@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Date;
+import java.util.List;
+
 
 @ToString
 @Getter
@@ -17,13 +18,12 @@ public class Donacion {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "producto_id")
-    private ProductoCarrito productoCarrito;
+    @OneToMany(mappedBy = "donacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductoCarrito> productosDonacion;
 
     @ManyToOne
-    @JoinColumn(name = "organizacion_id")
-    private Organizacion organizacion;
+    @JoinColumn(name = "albergue_id")
+    private Albergue albergue;
 
     @ManyToOne
     @JoinColumn(name = "beneficiario_id")
@@ -32,5 +32,14 @@ public class Donacion {
     @ManyToOne
     @JoinColumn(name = "voluntario_id")
     private Usuario voluntarioRecojo;
+
+
+    private Boolean aceptado;
+
+
+    private Boolean asignado;
+
+
+    private Boolean recojo;
 
 }

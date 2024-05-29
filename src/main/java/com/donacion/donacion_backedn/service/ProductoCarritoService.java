@@ -1,11 +1,13 @@
 package com.donacion.donacion_backedn.service;
 
 
-import com.donacion.donacion_backedn.model.ProductoCarrito;
-import com.donacion.donacion_backedn.model.Usuario;
+import com.donacion.donacion_backedn.model.*;
 import com.donacion.donacion_backedn.repository.ProductoCarritoRepository;
+import com.donacion.donacion_backedn.repository.ProductoStockRepository;
+import com.donacion.donacion_backedn.request.ProductoRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -21,7 +23,15 @@ public class ProductoCarritoService {
     private ProductoCarritoRepository productoCarritoRepository;
 
     @Autowired
-    private ClienteService clienteServices;
+    private ProductoStockService productoStockService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private AlbergueService albergueService;
+    @Autowired
+    private DonacionService donacionService;
 
     public ProductoCarrito getById(Long id) {
 
@@ -41,14 +51,16 @@ public class ProductoCarritoService {
         }
     }
 
-    public void guardarProducto(ProductoCarrito productoCarrito) {
-         //public void guardarProducto(ProductoCarrito productoCarrito, Authentication authentication) {
-
-        //Usuario beneficiario=clienteServices.GetbyEmail(authentication.getName());
-        Usuario beneficiario=clienteServices.GetbyEmail("Admin@gmail.com");
+    public ProductoCarrito guardarProducto(ProductoRequest productoRequest) {
+        ProductoCarrito productoCarrito = new ProductoCarrito();
+        Usuario usuario = usuarioService.obtenerUsuarioPorId(Long.valueOf(productoRequest.getIdUsuario()));
+        ProductoStock productoStock = productoStockService.getById(Long.valueOf(productoRequest.getIdProducto()));
         productoCarrito.setFechaDeAgregado(Date.valueOf(LocalDate.now()));
-        productoCarrito.setId(beneficiario.getId());
-        productoCarritoRepository.save(productoCarrito);
+        productoCarrito.setBeneficiario(usuario);
+        productoCarrito.setProductoStock(productoStock);
+        productoCarrito.setCantidadSeleccionada(productoRequest.getCantidad());
+        productoCarrito.setConfirmado(false);
+        return productoCarritoRepository.save(productoCarrito);
     }
 
     public void eliminarProducto(ProductoCarrito productoCarrito) {
@@ -61,7 +73,28 @@ public class ProductoCarritoService {
     }
 
 
+    public List<ProductoCarrito> getProdcutosPorEstado(Boolean estado) {
+        return productoCarritoRepository.findByConfirmado(estado);
+    }
 
 
+    public Donacion confirmarPedido(Long idUsuario) {
+        Usuario usuario = usuarioService.obtenerUsuarioPorId(idUsuario);
+        List<ProductoCarrito> productoCarritos = productoCarritoRepository.findByUsuario(usuario);
+        for (ProductoCarrito productoCarrito : productoCarritos) {
+            productoCarrito.setConfirmado(true);
+            productoCarritoRepository.save(productoCarrito);
+        }
+        productoCarritoRepository.saveAll(productoCarritos);
+        Donacion donacion = new Donacion();
+        Albergue albergue = albergueService.findByBeneficiario(Math.toIntExact(idUsuario));
+        donacion.setBeneficiario(usuario);
+        donacion.setAlbergue(albergue);
+        donacion.setProductosDonacion(productoCarritos);
+        donacion.setAceptado(false);
 
+        donacionService.saveDonacion(donacion);
+        return donacion;
+    }
 }
+

@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AlbergueRepository extends JpaRepository<Albergue, Long> {
 
+    public Albergue findByBeneficiarioId(Integer beneficiarioId);
+
 }
 

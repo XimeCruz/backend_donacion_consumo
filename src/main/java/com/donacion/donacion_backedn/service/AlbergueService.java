@@ -59,6 +59,10 @@ public class AlbergueService {
     public void updateAlbergue(Albergue albergue) {
         albergueRepository.save(albergue);
     }
+
+    public Albergue findByBeneficiario(Integer idBeneficiario) {
+        return albergueRepository.findByBeneficiarioId(idBeneficiario);
+    };
     
     
 }
