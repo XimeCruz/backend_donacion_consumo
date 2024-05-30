@@ -1,6 +1,5 @@
 package com.donacion.donacion_backedn.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +18,11 @@ public class Notificacion {
 
     private String mensaje;
 
+    private Integer idDonacion;
 
-    @OneToOne
-    private Donacion donacion;
+    private Integer idProducto;
+
+    private boolean visto;
+
+
 }

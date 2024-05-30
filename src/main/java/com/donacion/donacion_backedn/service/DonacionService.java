@@ -4,6 +4,7 @@ import com.donacion.donacion_backedn.model.Donacion;
 import com.donacion.donacion_backedn.model.Notificacion;
 import com.donacion.donacion_backedn.repository.DonacionRepository;
 import com.donacion.donacion_backedn.response.DonacionResponse;
+import com.donacion.donacion_backedn.response.NotificacionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -65,7 +66,10 @@ public class DonacionService {
 
     public Donacion actualizarEstadoDonacion(Long idDonacion) {
         Notificacion notificacion = new Notificacion();
-        notificacion.setId(idDonacion);
+        notificacion.setIdDonacion(Math.toIntExact(idDonacion));
+        notificacion.setVisto(false);
+        notificacion.setMensaje("Donacion en espera");
+        notificacionService.guardarNotificacion(notificacion);
         Donacion donacion = donacionRepository.findById(Long.valueOf(idDonacion)).orElse(null);
         donacion.setAceptado(true);
         donacionRepository.save(donacion);
@@ -82,6 +86,17 @@ public class DonacionService {
         return donacion;
     }
 
+    public Donacion actualizarEntrega(NotificacionResponse notificacion, Integer idUsuario) {
+        Donacion donacion = notificacion.getDonacion();
+        donacion.setEntregado(true);
+        donacionRepository.save(donacion);
+        return donacion;
+    }
 
-
+    public Donacion actualizarRecibido(NotificacionResponse notificacion, Integer idUsuario) {
+        Donacion donacion = notificacion.getDonacion();
+        donacion.setRecibido(true);
+        donacionRepository.save(donacion);
+        return donacion;
+    }
 }

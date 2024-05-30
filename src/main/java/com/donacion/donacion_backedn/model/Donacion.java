@@ -45,14 +45,9 @@ public class Donacion {
     private Boolean recojo;
 
 
-    /*public void addProductoCarrito(ProductoCarrito productoCarrito) {
-        productosDonacion.add(productoCarrito);
-        productoCarrito.setDonacion(this);
-    }
+    private Boolean entregado;
 
-    public void removeProductoCarrito(ProductoCarrito productoCarrito) {
-        productosDonacion.remove(productoCarrito);
-        productoCarrito.setDonacion(null);
-    }*/
+
+    private Boolean recibido;
 
 }
