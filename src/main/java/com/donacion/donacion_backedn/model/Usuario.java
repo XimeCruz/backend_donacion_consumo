@@ -75,7 +75,7 @@ public class Usuario {
 	 *el rol es identificado a traves de un id.
 	 */
 
-	private Integer rol;
+	private String rol;
 
 	
 	/**

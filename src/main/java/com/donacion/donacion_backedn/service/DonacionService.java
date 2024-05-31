@@ -21,6 +21,7 @@ public class DonacionService {
     public DonacionRepository donacionRepository;
 
     @Autowired
+    @Lazy
     public NotificacionService notificacionService;
 
     @Autowired
@@ -66,13 +67,15 @@ public class DonacionService {
 
     public Donacion actualizarEstadoDonacion(Long idDonacion) {
         Notificacion notificacion = new Notificacion();
-        notificacion.setIdDonacion(Math.toIntExact(idDonacion));
+
         notificacion.setVisto(false);
         notificacion.setMensaje("Donacion en espera");
-        notificacionService.guardarNotificacion(notificacion);
         Donacion donacion = donacionRepository.findById(Long.valueOf(idDonacion)).orElse(null);
+        notificacion.setIdDonacion(Math.toIntExact(donacion.getId()));
         donacion.setAceptado(true);
         donacionRepository.save(donacion);
+
+        notificacionService.guardarNotificacion(notificacion);
         return donacion;
     }
 

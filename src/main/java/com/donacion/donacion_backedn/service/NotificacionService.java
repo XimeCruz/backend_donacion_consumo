@@ -6,6 +6,7 @@ import com.donacion.donacion_backedn.repository.NotificacionRepository;
 import com.donacion.donacion_backedn.response.NotificacionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,8 +19,11 @@ public class NotificacionService {
 
     @Autowired
     private NotificacionRepository notificacionRepository;
+
     @Autowired
+    @Lazy
     private DonacionService donacionService;
+
     @Autowired
     private UsuarioService usuarioService;
 
@@ -49,8 +53,9 @@ public class NotificacionService {
         donacion.setVoluntarioRecojo(usuario);
         donacionService.saveDonacion(donacion);
         Notificacion notificacion2 = new Notificacion();
-        notificacion.setMensaje("El voluntario "+ donacion.getVoluntarioRecojo().getNombre() + "ya ha aceptado llevar la donacion, al albergue "+ donacion.getAlbergue().getNombre());
-        guardarNotificacion(notificacion);
+        notificacion2.setMensaje("El voluntario "+ donacion.getVoluntarioRecojo().getNombre() + " ya ha aceptado llevar la donacion, al albergue "+ donacion.getAlbergue().getNombre());
+        notificacion2.setIdDonacion(notificacion.getIdDonacion());
+        guardarNotificacion(notificacion2);
         return notificacion2;
     }
 }

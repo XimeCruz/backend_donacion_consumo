@@ -3,8 +3,10 @@ package com.donacion.donacion_backedn.service;
 
 import com.donacion.donacion_backedn.model.Usuario;
 import com.donacion.donacion_backedn.repository.UsuarioRepository;
+import com.donacion.donacion_backedn.request.CrearCuentaRequest;
 import com.donacion.donacion_backedn.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,5 +32,13 @@ public class UsuarioService {
             return true;
         }
         return false;
+    }
+
+    public Usuario guardarUsuario(CrearCuentaRequest crearCuentaRequest) {
+        Usuario usuario = new Usuario();
+        usuario.setCorreoElectronico(crearCuentaRequest.getEmail());
+        usuario.setPassword(crearCuentaRequest.getContrasenia());
+        usuario.setNombre(crearCuentaRequest.getNombre());
+        return usuarioRepository.save(usuario);
     }
 }

@@ -1,6 +1,7 @@
 package com.donacion.donacion_backedn.controller;
 
 import com.donacion.donacion_backedn.model.Usuario;
+import com.donacion.donacion_backedn.request.CrearCuentaRequest;
 import com.donacion.donacion_backedn.request.LoginRequest;
 import com.donacion.donacion_backedn.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,11 @@ public class LoginController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/crear-cuenta")
+    public ResponseEntity<Usuario> crearCuenta(@RequestBody CrearCuentaRequest crearCuentaRequest) {
+        return new ResponseEntity<>(usuarioService.guardarUsuario(crearCuentaRequest), HttpStatus.CREATED);
     }
 
 }

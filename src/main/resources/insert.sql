@@ -3,6 +3,17 @@
 --             (DEFAULT, 'Beneficiario'),
 --             (DEFAULT, 'Voluntario');
 
+-- INSERT INTO public.usuarios(id, nombre, "nombre de usuario", correo_electronico, password, activo, telefono, "fecha de nacimiento", rol)
+-- VALUES
+--     (9, 'Admin', 'Admin', 'Admin@gmail.com', '$2a$10$zfHAlRP5PqQLFewPFxDyNO1bTGgOE98OAIPEkoLK4/6HJgDytRRl6', 1, '3148918702', '2004-03-04', 'BENEFICIARIO'),
+--     (10, 'Mateo josue Rodriguez Chico', 'Mateo', 'mateo204r@gmail.com', '$2a$10$zfHAlRP5PqQLFewPFxDyNO1bTGgOE98OAIPEkoLK4/6HJgDytRRl6', 1, '3148918702', '2004-03-04', 'BENEFICIARIO');
+-- INSERT INTO public.usuarios(id, nombre, "nombre de usuario", correo_electronico, password, activo, telefono, "fecha de nacimiento", rol)
+-- VALUES
+--     (11, 'Luisa Fernanda Morales', 'LuisaF', 'luisafernanda@mail.com', '123', 1, '3216549870', '1990-07-15', 'BENEFICIARIO'),
+--     (12, 'Carlos Andrés Pérez', 'CarlosAP', 'carlosap@mail.com', '123', 0, '3007894561', '1985-11-09', 'BENEFICIARIO'),
+--     (13, 'Sofía Castro', 'SofiaC', 'sofiacastro@mail.com', '123', 1, '3105678902', '1992-05-21', 'BENEFICIARIO'),
+--     (14, 'Eduardo Ramírez', 'EduRam', 'eduardoram@mail.com', '123', 1, '3187654321', '1998-08-30', 'BENEFICIARIO');
+
 
 INSERT INTO public.usuarios(id, nombre, "nombre de usuario", correo_electronico, password, activo, telefono, "fecha de nacimiento", rol)
 VALUES
