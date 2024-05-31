@@ -60,6 +60,12 @@ public class SolicitudController {
         return new ResponseEntity<>(donacionService.getAllDonacions(),HttpStatusCode.valueOf(200));
     }
 
+    //ver donaciones pedidas por ususario
+    @GetMapping("/lista-donacion-pedida/{idUsuario}")
+    public ResponseEntity<List<DonacionResponse>> listaDonacionesPedidasPorUsuario(@PathVariable Long idUsuario) {
+        return new ResponseEntity<>(donacionService.getAllDonacionsPorUsuario(idUsuario),HttpStatusCode.valueOf(200));
+    }
+
     //obtener detalle de donaciones
     @GetMapping("/lista-info-donacion/{idDonacion}")
     public ResponseEntity<DonacionResponse> donacionPedida(@PathVariable Long idDonacion) {

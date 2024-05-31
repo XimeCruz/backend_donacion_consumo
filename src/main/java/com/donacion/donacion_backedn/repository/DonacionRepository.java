@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface DonacionRepository extends JpaRepository<Donacion, Long> {
     List<Donacion> findByAsignado(boolean asignado);
+
+    List<Donacion> findByBeneficiarioId(Integer beneficiarioId);
 }

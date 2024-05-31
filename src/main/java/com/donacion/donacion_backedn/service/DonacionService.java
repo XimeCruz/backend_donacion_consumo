@@ -2,6 +2,7 @@ package com.donacion.donacion_backedn.service;
 
 import com.donacion.donacion_backedn.model.Donacion;
 import com.donacion.donacion_backedn.model.Notificacion;
+import com.donacion.donacion_backedn.model.ProductoCarrito;
 import com.donacion.donacion_backedn.repository.DonacionRepository;
 import com.donacion.donacion_backedn.response.DonacionResponse;
 import com.donacion.donacion_backedn.response.NotificacionResponse;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -101,5 +103,21 @@ public class DonacionService {
         donacion.setRecibido(true);
         donacionRepository.save(donacion);
         return donacion;
+    }
+
+    public List<DonacionResponse> getAllDonacionsPorUsuario(Long idUsuario) {
+        List<DonacionResponse> donaciones = new ArrayList<>();
+        List<Donacion> donacions = donacionRepository.findByBeneficiarioId(Math.toIntExact(idUsuario));
+        for (Donacion donacion : donacions) {
+            DonacionResponse donacionResponse = new DonacionResponse();
+            assert donacion != null;
+            donacionResponse.setBeneficiario(donacion.getBeneficiario());
+            donacionResponse.setAlbergue(donacion.getAlbergue());
+            List<ProductoCarrito> productoCarritoList = productoCarritoService.getProductosPorDonacion(Math.toIntExact(donacion.getId()));
+            donacionResponse.setProductosDonacion(productoCarritoList);
+            donaciones.add(donacionResponse);
+        }
+
+        return donaciones;
     }
 }
