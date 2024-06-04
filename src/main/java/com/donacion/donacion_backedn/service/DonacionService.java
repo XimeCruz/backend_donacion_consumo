@@ -32,7 +32,14 @@ public class DonacionService {
 
     // Método para obtener todas las Donacions
     public List<Donacion> getAllDonacions() {
-        return donacionRepository.findAll();
+        List<Donacion> donaciones = new ArrayList<>();
+        List<Donacion> donacionesAux = donacionRepository.findAll();
+        for (Donacion donacion : donacionesAux) {
+            if(donacion.getVoluntarioRecojo() == null) {
+                donaciones.add(donacion);
+            }
+        }
+        return donaciones;
     }
 
     // Método para obtener una Donacion por su ID
