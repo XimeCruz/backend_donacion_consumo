@@ -35,7 +35,7 @@ public class DonacionService {
         List<Donacion> donaciones = new ArrayList<>();
         List<Donacion> donacionesAux = donacionRepository.findAll();
         for (Donacion donacion : donacionesAux) {
-            if(donacion.getVoluntarioRecojo() == null) {
+            if(donacion.getVoluntarioRecojo() == null  && donacion.getAceptado()) {
                 donaciones.add(donacion);
             }
         }
