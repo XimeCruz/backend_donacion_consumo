@@ -36,18 +36,18 @@ public class Donacion {
     private Usuario voluntarioRecojo;
 
 
-    private Boolean aceptado;
+    private Boolean aceptado = false;
 
 
-    private Boolean asignado;
+    private Boolean asignado = false;
 
 
-    private Boolean recojo;
+    private Boolean recojo = false;
 
 
-    private Boolean entregado;
+    private Boolean entregado = false;
 
 
-    private Boolean recibido;
+    private Boolean recibido = false;
 
 }

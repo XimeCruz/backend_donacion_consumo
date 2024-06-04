@@ -1,6 +1,7 @@
 package com.donacion.donacion_backedn.response;
 
 import com.donacion.donacion_backedn.model.Albergue;
+import com.donacion.donacion_backedn.model.Donacion;
 import com.donacion.donacion_backedn.model.ProductoCarrito;
 import com.donacion.donacion_backedn.model.Usuario;
 import lombok.Getter;
@@ -13,9 +14,11 @@ import java.util.List;
 @Setter
 public class DonacionResponse {
 
-    private Albergue albergue;
+    private Donacion donacion;
 
-    private Usuario beneficiario;
+//    private Albergue albergue;
+//
+//    private Usuario beneficiario;
 
     private Usuario voluntarioRecojo;
 

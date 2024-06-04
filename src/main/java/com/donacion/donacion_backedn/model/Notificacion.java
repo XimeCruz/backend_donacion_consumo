@@ -20,8 +20,6 @@ public class Notificacion {
 
     private Integer idDonacion;
 
-    private Integer idProducto;
-
     private boolean visto;
 
 

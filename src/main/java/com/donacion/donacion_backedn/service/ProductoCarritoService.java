@@ -114,8 +114,9 @@ public class ProductoCarritoService {
         Donacion donacion = donacionService.getDonacionById(idDonacion.intValue());
         DonacionResponse donacionResponse = new DonacionResponse();
         assert donacion != null;
-        donacionResponse.setBeneficiario(donacion.getBeneficiario());
-        donacionResponse.setAlbergue(donacion.getAlbergue());
+        donacionResponse.setDonacion(donacion);
+//        donacionResponse.setBeneficiario(donacion.getBeneficiario());
+//        donacionResponse.setAlbergue(donacion.getAlbergue());
         List<ProductoCarrito> productoCarritoList = getProductosPorDonacion(Math.toIntExact(donacion.getId()));
         donacionResponse.setProductosDonacion(productoCarritoList);
         return donacionResponse;

@@ -62,7 +62,7 @@ public class AlbergueService {
 
     public Albergue findByBeneficiario(Integer idBeneficiario) {
         return albergueRepository.findByBeneficiarioId(idBeneficiario);
-    };
-    
-    
+    }
+
+
 }

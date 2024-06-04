@@ -111,8 +111,9 @@ public class DonacionService {
         for (Donacion donacion : donacions) {
             DonacionResponse donacionResponse = new DonacionResponse();
             assert donacion != null;
-            donacionResponse.setBeneficiario(donacion.getBeneficiario());
-            donacionResponse.setAlbergue(donacion.getAlbergue());
+            donacionResponse.setDonacion(donacion);
+//            donacionResponse.setBeneficiario(donacion.getBeneficiario());
+//            donacionResponse.setAlbergue(donacion.getAlbergue());
             List<ProductoCarrito> productoCarritoList = productoCarritoService.getProductosPorDonacion(Math.toIntExact(donacion.getId()));
             donacionResponse.setProductosDonacion(productoCarritoList);
             donaciones.add(donacionResponse);

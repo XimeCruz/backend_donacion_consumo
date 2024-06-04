@@ -40,7 +40,8 @@ public class NotificacionService {
         Notificacion notificacion = notificacionRepository.findById(idNotificacion).orElse(null);
         NotificacionResponse notificacionResponse = new NotificacionResponse();
         notificacionResponse.setDonacion(donacionService.getDonacionById(notificacion.getIdDonacion()));
-        notificacionResponse.setVisto(true);
+        notificacion.setVisto(true);
+        notificacionRepository.save(notificacion);
         notificacionResponse.setMensaje(notificacion.getMensaje());
         return notificacionResponse;
     }

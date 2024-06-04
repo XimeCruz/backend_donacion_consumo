@@ -4,6 +4,7 @@ import com.donacion.donacion_backedn.model.Albergue;
 import com.donacion.donacion_backedn.service.AlbergueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +22,11 @@ public class AlbergueController {
         public List<Albergue> getAllAlbergues() {
         return albergueService.getAlbergues();
     }
+
+    @GetMapping("/find-user/{idUsuario}")
+    public Albergue getAlbergueByUsuarioId(@PathVariable("idUsuario") Integer idUser) {
+        return albergueService.findByBeneficiario(idUser);
+    }
+
 
 }
